@@ -1,6 +1,6 @@
 let page = document.getElementById("buttonDiv");
 let selectedClassName = "current";
-const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
+const presetButtonColors = ["#000000", "#e8453c", "#f9bb2d", "#4688f1"];
 
 // Reacts to a button click by marking the selected button and saving
 // the selection
@@ -17,6 +17,11 @@ function handleButtonClick(event) {
   let color = event.target.dataset.color;
   event.target.classList.add(selectedClassName);
   chrome.storage.sync.set({ color });
+}
+
+function randomColor() {
+  // Hardcoded test value
+  return "#757aa3";
 }
 
 // Add a button to the page for each supplied color
@@ -41,6 +46,23 @@ function constructOptions(buttonColors) {
       button.addEventListener("click", handleButtonClick);
       page.appendChild(button);
     }
+
+    // Add random coloured button
+    let randomButton = document.createElement("button");
+    let randomColor = randomColor();
+    randomButton.dataset.color = randomColor;
+    randomButton.style.backgroundColor = randomColor;
+    randomButton.style.height = "100px";
+    randomButton.style.width = "100px";
+
+    // …mark the currently selected color…
+    if (randomColor === currentColor) {
+      randomButton.classList.add(selectedClassName);
+    }
+
+    // …and register a listener for when that button is clicked
+    randomButton.addEventListener("click", handleButtonClick);
+    page.appendChild(randomButton);
   });
 }
 
